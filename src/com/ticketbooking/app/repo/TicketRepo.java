@@ -1,10 +1,10 @@
 package com.ticketbooking.app.repo;
 
-import com.ticketbooking.app.Entity.TicketDetails;
+import com.ticketbooking.app.entity.TicketDetails;
 
 public interface TicketRepo {
 
-	public long createTicket(TicketDetails details);
-	public TicketDetails getTicket(long id);
-	public TicketDetails[] getAllTickets();
+	public Long createTicket(TicketDetails details);
+	public TicketDetails getTicket(Long id);
+	
 }

@@ -1,25 +1,25 @@
 package com.ticketbooking.app.repo;
 
-import java.io.Serializable;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-
-import org.hibernate.Query;
+import javax.persistence.Query;
+import javax.persistence.TemporalType;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-
-import com.ticketbooking.app.Entity.TicketDetails;
+import com.ticketbooking.app.entity.TicketDetails;
 import com.ticketbooking.app.util.HibernateUtil;
 
 public class TicketRepoImpl implements TicketRepo {
 
-	public long createTicket(TicketDetails details) {
+	public Long createTicket(TicketDetails details) {
 		Session session = null;
 		try {
 			session = HibernateUtil.getSessionFactory().openSession();
 			Transaction t = session.beginTransaction();
-			session.save(details);
+			Query query = session.createQuery("from TicketDetails where doj= :date and passport= :passprt");
+			query.setParameter("passprt", details.getPassport());
+			query.setParameter("date", details.getDoj(), TemporalType.DATE);
+			if (query.getResultList().size() == 0) {
+				session.save(details);
+			}
 			t.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -30,7 +30,7 @@ public class TicketRepoImpl implements TicketRepo {
 		return details.getId();
 	}
 
-	public TicketDetails getTicket(long id) {
+	public TicketDetails getTicket(Long id) {
 		Session session = null;
 		TicketDetails details = null;
 		try {
@@ -45,24 +45,4 @@ public class TicketRepoImpl implements TicketRepo {
 		}
 		return details;
 	}
-
-	public TicketDetails[] getAllTickets() {
-		Session session = null;
-		TicketDetails details = null;
-		List<TicketDetails> list = null;
-		try {
-			session = HibernateUtil.getSessionFactory().openSession();
-			Transaction t = session.beginTransaction();
-			Query<TicketDetails> query = session.createQuery("from TicketDetails");
-			list = query.list();
-			t.commit();
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			session.close();
-		}
-		TicketDetails[] arr = new TicketDetails[list.size()];
-		return arr;
-	}
-
 }

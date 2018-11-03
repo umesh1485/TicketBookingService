@@ -7,7 +7,7 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 
-import com.ticketbooking.app.Entity.TicketDetails;
+import com.ticketbooking.app.entity.TicketDetails;
 
 public class HibernateUtil {
 	private static final SessionFactory sessionFactory = buildSessionFactory();
@@ -17,7 +17,8 @@ public class HibernateUtil {
 	private static SessionFactory buildSessionFactory() {
 		try {
 			Configuration config = new Configuration();
-			config.configure("hibernate.cfg.xml");
+			config.configure(new File("hibernate.cfg.xml"));
+			config.addAnnotatedClass(com.ticketbooking.app.entity.TicketDetails.class); 
 			serviceRegistry = new StandardServiceRegistryBuilder().applySettings(config.getProperties()).build();
 
 			return config.buildSessionFactory(serviceRegistry);

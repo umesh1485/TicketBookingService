@@ -1,72 +1,108 @@
-package com.ticketbooking.app.Entity;
+package com.ticketbooking.app.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
+@XmlRootElement(name = "ticketDetails")
+@XmlAccessorType(XmlAccessType.FIELD)
 @Entity
-public class TicketDetails {
-	
+public class TicketDetails implements Serializable {
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private long id;
-	private String fName;
-	private String lName;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@XmlTransient
+	private Long id;
+
+	@NotNull
+	@Size(min = 1)
+	@XmlElement(required = true)
+	private String firstName;
+
+	@NotNull
+	@Size(min = 1)
+	@XmlElement(required = true)
+	private String lastName;
+
+	@NotNull
+	@Size(min = 1, max = 20)
+	@XmlElement(required = true)
 	private String passport;
+
+	@NotNull
+	@Temporal(TemporalType.DATE)
+	@XmlElement(required = true)
 	private Date doj;
-	
-	
-	public TicketDetails(String fName, String lName, String passport, Date doj) {
+
+	public TicketDetails(String firstName, String lastName, String passport, Date doj) {
 		super();
-		this.fName = fName;
-		this.lName = lName;
+		this.firstName = firstName;
+		this.lastName = lastName;
 		this.passport = passport;
 		this.doj = doj;
 	}
-	
+
 	public TicketDetails() {
 		super();
+		// TODO Auto-generated constructor stub
 	}
 
-
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(long id) {
+
+	public void setId(Long id) {
 		this.id = id;
 	}
-	public String getfName() {
-		return fName;
+
+	public String getFirstName() {
+		return firstName;
 	}
-	public void setfName(String fName) {
-		this.fName = fName;
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
-	public String getlName() {
-		return lName;
+
+	public String getLastName() {
+		return lastName;
 	}
-	public void setlName(String lName) {
-		this.lName = lName;
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
+
 	public String getPassport() {
 		return passport;
 	}
+
 	public void setPassport(String passport) {
 		this.passport = passport;
 	}
+
 	public Date getDoj() {
 		return doj;
 	}
+
 	public void setDoj(Date doj) {
 		this.doj = doj;
 	}
 
 	@Override
 	public String toString() {
-		return "PassengerDetails [id=" + id + ", fName=" + fName + ", lName=" + lName + ", Passport=" + passport
-				+ ", doj=" + doj + "]";
+		return "TicketDetails [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", passport="
+				+ passport + ", doj=" + doj + "]";
 	}
-
 }
