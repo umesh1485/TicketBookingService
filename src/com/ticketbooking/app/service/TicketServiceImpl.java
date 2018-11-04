@@ -22,14 +22,14 @@ public class TicketServiceImpl implements TicketService {
 		validator = factory.getValidator();
 	}
 
-	public String createTicket(TicketDetails tkt) throws Throwable {
+	public String createTicket(TicketDetails tkt) {
 		Set<ConstraintViolation<TicketDetails>> constraintViolations = validator.validate(tkt);
 		if (constraintViolations.size() == 0) {
 			TicketRepo repo = new TicketRepoImpl();
 			Long ackId = repo.createTicket(tkt);
 			if (null==ackId) {
 				throw new RuntimeException(
-						"tciket is already booked for the given passport for date:" + tkt.getDoj().toString());
+						"Tciket is already booked for the given passport for date:" + tkt.getDoj().toString());
 			} else {
 				return "Ticket is booked ackId is : "+ackId;
 			}
@@ -47,8 +47,7 @@ public class TicketServiceImpl implements TicketService {
 		if (id != null) {
 			TicketDetails details = repo.getTicket(id);
 			if (null == details) {
-				System.out.println("No records exist with ID:" + id);
-				return details;
+				throw new RuntimeException("No record exist with ID:" + id);
 			} else
 				return details;
 		} else {

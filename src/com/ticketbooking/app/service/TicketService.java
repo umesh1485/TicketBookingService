@@ -10,7 +10,7 @@ import com.ticketbooking.app.entity.TicketDetails;
 public interface TicketService {
 
 	@WebMethod
-	public String createTicket(TicketDetails tkt) throws Throwable;
+	public String createTicket(TicketDetails tkt);
 	
 	@WebMethod
 	public TicketDetails getTicket(Long id);
